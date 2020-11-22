@@ -70,16 +70,17 @@ def run_astar_for_weights_in_range(heuristic_type: HeuristicFunctionType, proble
                                    max_nr_states_to_expand: Optional[int] = 40_000,
                                    low_heuristic_weight: float = 0.5, high_heuristic_weight: float = 0.95):
     weights_arr = np.linspace(low_heuristic_weight, high_heuristic_weight, n)
-    weights_list = [weight for weight in weights_arr]
+    weights_list = []
     costs = []
     num_nodes_expanded = []
-    for weight in weights_list:
+    for weight in weights_arr:
         a_star_alg = AStar(heuristic_function_type=heuristic_type, max_nr_states_to_expand=max_nr_states_to_expand,
                            heuristic_weight=weight)
         res = a_star_alg.solve_problem(problem)
         if res.is_solution_found:
             costs.append(res.solution_g_cost)
             num_nodes_expanded.append(res.nr_expanded_states)
+            weights_list.append(weight)
     plot_distance_and_expanded_wrt_weight_figure(problem_name="A* weights", weights=weights_list, total_cost=costs,
                                                  total_nr_expanded=num_nodes_expanded)
 
