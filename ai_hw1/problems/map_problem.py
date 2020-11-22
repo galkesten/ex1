@@ -8,7 +8,7 @@ __all__ = ['MapState', 'MapProblem']
 
 @dataclass(frozen=True)
 class MapState(GraphProblemState):
-    """
+    """G
     StreetsMap state is represents the current geographic location on the map.
     This location is defined by the junction index.
     """
