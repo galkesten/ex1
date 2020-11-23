@@ -77,12 +77,10 @@ def run_astar_for_weights_in_range(heuristic_type: HeuristicFunctionType, proble
         a_star_alg = AStar(heuristic_function_type=heuristic_type, max_nr_states_to_expand=max_nr_states_to_expand,
                            heuristic_weight=weight)
         res = a_star_alg.solve_problem(problem)
-        print("hi")
         if res.is_solution_found:
             costs.append(res.solution_g_cost)
             num_nodes_expanded.append(res.nr_expanded_states)
             weights_list.append(weight)
-            print(f'another weight was calculated,weight:{weight}')
     plot_distance_and_expanded_wrt_weight_figure(problem_name="A* weights", weights=weights_list, total_cost=costs,
                                                  total_nr_expanded=num_nodes_expanded)
 
@@ -222,16 +220,12 @@ def mda_problem_with_weighted_astar_experiments():
     # TODO: Call here the function `run_astar_for_weights_in_range()`
     #       with `MDAMSTAirDistHeuristic`
     #       over the `small_mda_problem_with_distance_cost`.
-    # run_astar_for_weights_in_range(MDAMSTAirDistHeuristic, small_mda_problem_with_distance_cost)
+    run_astar_for_weights_in_range(MDAMSTAirDistHeuristic, small_mda_problem_with_distance_cost)
     # Ex.30
     # TODO: Call here the function `run_astar_for_weights_in_range()`
     #       with `MDASumAirDistHeuristic`
     #       over the `moderate_mda_problem_with_distance_cost`.
-    a_star_alg = AStar(MDASumAirDistHeuristic, heuristic_weight=0.5)
-    res = a_star_alg.solve_problem(moderate_mda_problem_with_distance_cost)
-    print(res)
-    print("face_2")
-    # run_astar_for_weights_in_range(MDASumAirDistHeuristic, moderate_mda_problem_with_distance_cost)
+
     run_astar_for_weights_in_range(problem=moderate_mda_problem_with_distance_cost,
                                    heuristic_type=MDASumAirDistHeuristic)
 
@@ -340,6 +334,4 @@ def run_all_experiments():
 
 
 if __name__ == '__main__':
-    # run_all_experiments()
-    # mda_problem_with_weighted_astar_experiments()
-    mda_problem_with_astar_experiments()
+    run_all_experiments()
