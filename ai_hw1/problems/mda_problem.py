@@ -268,6 +268,7 @@ class MDAProblem(GraphProblem):
                                 its first `k` items and until the `n`-th item.
             You might find this tip useful for summing a slice of a collection.
         """
+
         prev_junction = prev_state.current_location
         succ_junction = succ_state.current_location
         new_cost = self.map_distance_finder.get_map_cost_between(prev_junction, succ_junction)
@@ -275,7 +276,8 @@ class MDAProblem(GraphProblem):
             mda_cost = MDACost(float('inf'), float('inf'), float('inf'), self.optimization_objective)
             return mda_cost
         dist_cost = new_cost if isinstance(new_cost, float) else new_cost.get_g_cost()
-        used_fridges = math.ceil(int(prev_state.get_total_nr_tests_taken_and_stored_on_ambulance() / self.problem_input.ambulance.fridge_capacity))
+        used_fridges = math.ceil(int(
+            prev_state.get_total_nr_tests_taken_and_stored_on_ambulance() / self.problem_input.ambulance.fridge_capacity))
         test_on_ambulance = 1 if prev_state.get_total_nr_tests_taken_and_stored_on_ambulance != frozenset() else 0
         lab_cost = 0
         if isinstance(succ_state.current_site, Laboratory):
@@ -283,14 +285,13 @@ class MDAProblem(GraphProblem):
                 is_visited_lab = 1
             else:
                 is_visited_lab = 0
-            lab_cost = test_on_ambulance * succ_state.current_site.tests_transfer_cost + is_visited_lab *\
-                     succ_state.current_site.revisit_extra_cost
-
+            lab_cost = test_on_ambulance * succ_state.current_site.tests_transfer_cost + is_visited_lab * \
+                       succ_state.current_site.revisit_extra_cost
 
         monetary_cost = self.problem_input.gas_liter_price * \
                         (self.problem_input.ambulance.drive_gas_consumption_liter_per_meter +
-                           sum(self.problem_input.ambulance.fridges_gas_consumption_liter_per_meter[:used_fridges])) \
-                           * dist_cost + lab_cost
+                         sum(self.problem_input.ambulance.fridges_gas_consumption_liter_per_meter[:used_fridges])) \
+                        * dist_cost + lab_cost
 
         travel_cost = dist_cost * prev_state.get_total_nr_tests_taken_and_stored_on_ambulance()
         mda_cost = MDACost(dist_cost, monetary_cost, travel_cost, self.optimization_objective)
@@ -304,8 +305,8 @@ class MDAProblem(GraphProblem):
          In order to create a set from some other collection (list/tuple) you can just `set(some_other_collection)`.
         """
         assert isinstance(state, MDAState)
-        return isinstance(state.current_site, Laboratory) and len(state.tests_transferred_to_lab) == \
-               len(self.problem_input.reported_apartments)
+        return isinstance(state.current_site, Laboratory) and state.tests_on_ambulance == frozenset() and \
+               state.tests_transferred_to_lab == frozenset(self.problem_input.reported_apartments)
 
     def get_zero_cost(self) -> Cost:
         """
@@ -335,8 +336,6 @@ class MDAProblem(GraphProblem):
         return sorted(list(set(self.problem_input.reported_apartments) - state.tests_on_ambulance -
                            state.tests_transferred_to_lab), key=lambda item: item.report_id)
 
-
-
     def get_all_certain_junctions_in_remaining_ambulance_path(self, state: MDAState) -> List[Junction]:
         """
         This method returns a list of junctions that are part of the remaining route of the ambulance.
@@ -347,4 +346,8 @@ class MDAProblem(GraphProblem):
             Use the method `self.get_reported_apartments_waiting_to_visit(state)`.
             Use python's `sorted(some_list, key=...)` function.
         """
-        raise NotImplementedError  # TODO: remove this line!
+
+        unvisited_apartments = self.get_reported_apartments_waiting_to_visit(state)
+        junctions = [ap.location for ap in unvisited_apartments]
+        junctions.append(state.current_location)
+        return sorted(junctions, key=lambda item: item.index)
