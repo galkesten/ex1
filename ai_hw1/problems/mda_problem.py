@@ -268,7 +268,6 @@ class MDAProblem(GraphProblem):
                                 its first `k` items and until the `n`-th item.
             You might find this tip useful for summing a slice of a collection.
         """
-
         prev_junction = prev_state.current_location
         succ_junction = succ_state.current_location
         new_cost = self.map_distance_finder.get_map_cost_between(prev_junction, succ_junction)
@@ -276,9 +275,9 @@ class MDAProblem(GraphProblem):
             mda_cost = MDACost(float('inf'), float('inf'), float('inf'), self.optimization_objective)
             return mda_cost
         dist_cost = new_cost if isinstance(new_cost, float) else new_cost.get_g_cost()
-        used_fridges = math.ceil(int(
-            prev_state.get_total_nr_tests_taken_and_stored_on_ambulance() / self.problem_input.ambulance.fridge_capacity))
-        test_on_ambulance = 1 if prev_state.get_total_nr_tests_taken_and_stored_on_ambulance != frozenset() else 0
+        used_fridges = math.ceil(
+            prev_state.get_total_nr_tests_taken_and_stored_on_ambulance() / self.problem_input.ambulance.fridge_capacity)
+        test_on_ambulance = 1 if prev_state.tests_on_ambulance != frozenset() else 0
         lab_cost = 0
         if isinstance(succ_state.current_site, Laboratory):
             if succ_state.current_site in prev_state.visited_labs:
@@ -290,7 +289,7 @@ class MDAProblem(GraphProblem):
 
         monetary_cost = self.problem_input.gas_liter_price * \
                         (self.problem_input.ambulance.drive_gas_consumption_liter_per_meter +
-                         sum(self.problem_input.ambulance.fridges_gas_consumption_liter_per_meter[:used_fridges])) \
+                         sum(self.problem_input.ambulance.fridges_gas_consumption_liter_per_meter[:used_fridges]))\
                         * dist_cost + lab_cost
 
         travel_cost = dist_cost * prev_state.get_total_nr_tests_taken_and_stored_on_ambulance()
