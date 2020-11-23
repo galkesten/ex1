@@ -172,17 +172,12 @@ def basic_mda_problem_experiments():
     print('Solve the MDA problem (small input, only distance objective, UniformCost).')
 
     small_mda_problem_with_distance_cost = get_mda_problem('small', MDAOptimizationObjective.Distance)
-    moderate_mda_problem_with_monetary_cost = get_mda_problem('moderate', MDAOptimizationObjective.Distance)
 
     # Ex.18
     # TODO: create an instance of `UniformCost`, solve the `small_mda_problem_with_distance_cost`
     #       with it and print the results.
     uniform = UniformCost()
     solution = uniform.solve_problem(small_mda_problem_with_distance_cost)
-    print(solution)
-
-    uniform = UniformCost()
-    solution = uniform.solve_problem(moderate_mda_problem_with_monetary_cost)
     print(solution)
 
 
@@ -196,10 +191,9 @@ def mda_problem_with_astar_experiments():
     # Ex.22
     # TODO: create an instance of `AStar` with the `MDAMaxAirDistHeuristic`,
     #       solve the `moderate_mda_problem_with_distance_cost` with it and print the results.
-    a_star_alg = AStar(MDAMaxAirDistHeuristic)
-    res = a_star_alg.solve_problem(moderate_mda_problem_with_distance_cost)
-    print(res)
-
+    # a_star_alg = AStar(MDAMaxAirDistHeuristic)
+    # res = a_star_alg.solve_problem(moderate_mda_problem_with_distance_cost)
+    # print(res)
     # Ex.25
     # TODO: create an instance of `AStar` with the `MDASumAirDistHeuristic`,
     #       solve the `moderate_mda_problem_with_distance_cost` with it and print the results.
@@ -246,15 +240,12 @@ def monetary_cost_objectives_mda_problem_experiments():
     # Ex.32
     # TODO: create an instance of `UniformCost`
     #       solve the `small_mda_problem_with_monetary_cost` with it and print the results.
-    uc = UniformCost()
-    res = uc.solve_problem(small_mda_problem_with_monetary_cost)
-    print(res)
+    exit()  # TODO: remove!
+
     # Ex.32
     # TODO: create an instance of `UniformCost`
     #       solve the `moderate_mda_problem_with_monetary_cost` with it and print the results.
-    uc = UniformCost()
-    res = uc.solve_problem(moderate_mda_problem_with_monetary_cost)
-    print(res)
+    exit()  # TODO: remove!
 
 
 def multiple_objectives_mda_problem_experiments():
@@ -268,9 +259,7 @@ def multiple_objectives_mda_problem_experiments():
     # Ex.35
     # TODO: create an instance of `AStar` with the `MDATestsTravelDistToNearestLabHeuristic`,
     #       solve the `moderate_mda_problem_with_tests_travel_dist_cost` with it and print the results.
-    a_star_alg = AStar(MDATestsTravelDistToNearestLabHeuristic)
-    res = a_star_alg.solve_problem(moderate_mda_problem_with_tests_travel_dist_cost)
-    print(res)
+    exit()  # TODO: remove!
 
     # Ex.38
     # TODO: Implement the algorithm A_2 described in this exercise in the assignment instructions.
@@ -315,9 +304,9 @@ def mda_problem_with_astar_epsilon_experiments():
     #       Use focal_epsilon=0.23, and max_focal_size=40.
     #       Use within_focal_priority_function=within_focal_h_sum_priority_function. This function
     #        (defined just above) is internally using the `MDASumAirDistHeuristic`.
-    astar_epsilon = AStarEpsilon(heuristic_function_type=MDAMSTAirDistHeuristic, within_focal_priority_function=
-    within_focal_h_sum_priority_function, focal_epsilon=0.23, max_focal_size=40)
-    solution = astar_epsilon.solve_problem(small_mda_problem_with_distance_cost)
+    astar_epsilon=AStarEpsilon(heuristic_function_type=MDAMSTAirDistHeuristic, within_focal_priority_function=
+                             within_focal_h_sum_priority_function, focal_epsilon=0.23, max_focal_size=40)
+    solution=astar_epsilon.solve_problem(small_mda_problem_with_distance_cost)
     print(solution)
 
 
@@ -332,6 +321,7 @@ def mda_problem_anytime_astar_experiments():
     # TODO: create an instance of `AnytimeAStar` once with the `MDAMSTAirDistHeuristic`, with
     #       `max_nr_states_to_expand_per_iteration` set to 1000, solve the
     #       `moderate_mda_problem_with_distance_cost` with it and print the results.
+
     anytime_astar1 = AnytimeAStar(MDAMSTAirDistHeuristic, 1000)
     solution = anytime_astar1.solve_problem(moderate_mda_problem_with_distance_cost)
     print(solution)
@@ -350,7 +340,4 @@ def run_all_experiments():
 
 
 if __name__ == '__main__':
-    #run_all_experiments()
-    #basic_mda_problem_experiments()
-    #monetary_cost_objectives_mda_problem_experiments()
-    multiple_objectives_mda_problem_experiments()
+    run_all_experiments()
