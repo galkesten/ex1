@@ -181,10 +181,6 @@ def basic_mda_problem_experiments():
     solution = uniform.solve_problem(small_mda_problem_with_distance_cost)
     print(solution)
 
-    uniform = UniformCost()
-    solution = uniform.solve_problem(moderate_mda_problem_with_monetary_cost)
-    print(solution)
-
 
 def mda_problem_with_astar_experiments():
     print()
@@ -291,7 +287,7 @@ def multiple_objectives_mda_problem_experiments():
     a_star_alg = AStar(MDAMSTAirDistHeuristic)
     res = a_star_alg.solve_problem(moderate_mda_problem_with_distance_cost)
     optimal_distance_cost = res.solution_g_cost
-    max_distance_cost = optimal_distance_cost * (1 + 0.1)
+    max_distance_cost = optimal_distance_cost * (1 + 0.6)
     a_star_alg_2 = AStar(heuristic_function_type=MDATestsTravelDistToNearestLabHeuristic,
                          open_criterion=lambda search_node: search_node.cost.distance_cost <= max_distance_cost)
     res = a_star_alg_2.solve_problem(problem=moderate_mda_problem_with_tests_travel_dist_cost)
