@@ -186,8 +186,8 @@ class MDATestsTravelDistToNearestLabHeuristic(HeuristicFunction):
             Returns the distance between `junction` and the laboratory that is closest to `junction`.
             """
             assert isinstance(self.problem, MDAProblem)
-            return min([junction.calc_air_distance_from(lab.location) for lab
-                        in self.problem.problem_input.laboratories])
+            return min([self.cached_air_distance_calculator.get_air_distance_between_junctions(junction, lab.location)
+                        for lab in self.problem.problem_input.laboratories])
 
         assert isinstance(self.problem, MDAProblem)
         assert isinstance(state, MDAState)

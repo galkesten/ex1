@@ -287,7 +287,15 @@ def multiple_objectives_mda_problem_experiments():
     #          previous parameters with their default values and pass an argument to a parameter that is positioned
     #          elsewhere next.
     #       Solve the `moderate_mda_problem_with_tests_travel_dist_cost` with it and print the results.
-    exit()  # TODO: remove!
+
+    a_star_alg = AStar(MDAMSTAirDistHeuristic)
+    res = a_star_alg.solve_problem(moderate_mda_problem_with_distance_cost)
+    optimal_distance_cost = res.solution_g_cost
+    max_distance_cost = optimal_distance_cost * (1 + 0.1)
+    a_star_alg_2 = AStar(heuristic_function_type=MDATestsTravelDistToNearestLabHeuristic,
+                         open_criterion=lambda search_node: search_node.cost.distance_cost <= max_distance_cost)
+    res = a_star_alg_2.solve_problem(problem=moderate_mda_problem_with_tests_travel_dist_cost)
+    print(res)
 
 
 def mda_problem_with_astar_epsilon_experiments():
@@ -315,9 +323,9 @@ def mda_problem_with_astar_epsilon_experiments():
     #       Use focal_epsilon=0.23, and max_focal_size=40.
     #       Use within_focal_priority_function=within_focal_h_sum_priority_function. This function
     #        (defined just above) is internally using the `MDASumAirDistHeuristic`.
-    astar_epsilon = AStarEpsilon(heuristic_function_type=MDAMSTAirDistHeuristic, within_focal_priority_function=
+    astar_epsilon_alg = AStarEpsilon(heuristic_function_type=MDAMSTAirDistHeuristic, within_focal_priority_function=
     within_focal_h_sum_priority_function, focal_epsilon=0.23, max_focal_size=40)
-    solution = astar_epsilon.solve_problem(small_mda_problem_with_distance_cost)
+    solution = astar_epsilon_alg.solve_problem(small_mda_problem_with_distance_cost)
     print(solution)
 
 
@@ -350,7 +358,8 @@ def run_all_experiments():
 
 
 if __name__ == '__main__':
-    #run_all_experiments()
-    #basic_mda_problem_experiments()
-    #monetary_cost_objectives_mda_problem_experiments()
-    multiple_objectives_mda_problem_experiments()
+    run_all_experiments()
+    # basic_mda_problem_experiments()
+    # monetary_cost_objectives_mda_problem_experiments()
+    #multiple_objectives_mda_problem_experiments()
+    #mda_problem_with_astar_experiments()
