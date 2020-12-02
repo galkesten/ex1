@@ -319,8 +319,9 @@ def mda_problem_with_astar_epsilon_experiments():
     #       Use focal_epsilon=0.23, and max_focal_size=40.
     #       Use within_focal_priority_function=within_focal_h_sum_priority_function. This function
     #        (defined just above) is internally using the `MDASumAirDistHeuristic`.
-    astar_epsilon_alg = AStarEpsilon(heuristic_function_type=MDAMSTAirDistHeuristic, within_focal_priority_function=
-    within_focal_h_sum_priority_function, focal_epsilon=0.23, max_focal_size=40)
+    astar_epsilon_alg = AStarEpsilon(heuristic_function_type=MDAMSTAirDistHeuristic,
+                                     within_focal_priority_function=within_focal_h_sum_priority_function,
+                                     focal_epsilon=0.23, max_focal_size=40)
     solution = astar_epsilon_alg.solve_problem(small_mda_problem_with_distance_cost)
     print(solution)
 
@@ -355,7 +356,3 @@ def run_all_experiments():
 
 if __name__ == '__main__':
     run_all_experiments()
-    # basic_mda_problem_experiments()
-    # monetary_cost_objectives_mda_problem_experiments()
-    #multiple_objectives_mda_problem_experiments()
-    #mda_problem_with_astar_experiments()

@@ -98,8 +98,8 @@ class AnytimeAStar(GraphProblemSolver):
                 total_nr_expanded_states += solution.nr_expanded_states
                 max_nr_stored_states = max(max_nr_stored_states, solution.max_nr_stored_states)
 
-
-        self.solver_name = f'{self.__class__.solver_name} (h={best_solution.solver.heuristic_function.heuristic_name}, w={best_heuristic_weight:.3f})'
+        self.solver_name = f'{self.__class__.solver_name} (h={best_solution.solver.heuristic_function.heuristic_name},'\
+                           f' w={best_heuristic_weight:.3f})'
         return best_solution._replace(
             solver=self, nr_expanded_states=total_nr_expanded_states, max_nr_stored_states=max_nr_stored_states,
             solving_time=timer.elapsed)
